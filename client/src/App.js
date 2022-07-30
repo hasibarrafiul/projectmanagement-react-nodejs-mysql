@@ -59,6 +59,15 @@ function App() {
     getInProgressTask()
   }
 
+  const deleteinprogress = (id) =>{
+    fetch('http://localhost:3001/api/deleteinprogresstask/', {
+      method: "POST",
+      headers: {"Content-Type": "application/JSON"},
+      body: JSON.stringify({id}) 
+    })
+    getInProgressTask()
+  }
+
   return (
     <div className="App">
       Project Management<br></br><br></br>
@@ -77,7 +86,7 @@ function App() {
         In Progress Tasks:<br></br>  <br></br>
         {inProgress.map((val)=>{
         return <div>
-          {val.tasks} 
+          {val.tasks}  &nbsp;&nbsp;&nbsp; <Button variant="contained" onClick={(e)=>deleteinprogress(val.id)}>Delete</Button>
           <br></br>
           <br></br>
           </div>
