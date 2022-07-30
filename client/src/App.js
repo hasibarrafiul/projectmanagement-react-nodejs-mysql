@@ -13,6 +13,7 @@ function App() {
   useEffect(()=> {
     getPendingTask();
     getInProgressTask();
+    getCompletedTask();
   },[pendingTask]);
 
   const getPendingTask = () =>{
@@ -26,6 +27,13 @@ function App() {
     fetch('http://localhost:3001/api/inprogress/')
     .then((resp) => resp.json())
     .then((resp) => setInProgress(resp))
+    .catch((error) => console.log(error));
+  }
+
+  const getCompletedTask = () =>{
+    fetch('http://localhost:3001/api/getcompleted/')
+    .then((resp) => resp.json())
+    .then((resp) => setCompleted(resp))
     .catch((error) => console.log(error));
   }
   
@@ -68,6 +76,16 @@ function App() {
     getInProgressTask()
   }
 
+  const setTaskCompleted = (id) =>{
+    fetch('http://localhost:3001/api/setcompleted/', {
+      method: "POST",
+      headers: {"Content-Type": "application/JSON"},
+      body: JSON.stringify({id}) 
+    })
+    getPendingTask()
+    getInProgressTask()
+  }
+
   return (
     <div className="App">
       Project Management<br></br><br></br>
@@ -87,6 +105,16 @@ function App() {
         {inProgress.map((val)=>{
         return <div>
           {val.tasks}  &nbsp;&nbsp;&nbsp; <Button variant="contained" onClick={(e)=>deleteinprogress(val.id)}>Delete</Button>
+          &nbsp;&nbsp;&nbsp; <Button variant="contained" onClick={(e)=>setTaskCompleted(val.id)}>Set Task Completed</Button>
+          <br></br>
+          <br></br>
+          </div>
+      })}
+
+        Completed Tasks:<br></br>  <br></br>
+        {completed.map((val)=>{
+        return <div>
+          {val.tasks}  
           <br></br>
           <br></br>
           </div>

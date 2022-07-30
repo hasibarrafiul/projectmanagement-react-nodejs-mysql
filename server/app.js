@@ -32,6 +32,14 @@ app.get('/api/inprogress/', (req,res)=>{
     });
 });
 
+app.get('/api/getcompleted/', (req,res)=>{
+    const sqlSelect = "SELECT * from completedtasks";
+    db.query(sqlSelect, (err, result)=>{
+        //console.log(result)
+        res.send(result);
+    });
+});
+
 app.post('/api/addpending/', (req,res)=>{
     const tasks=req.body.inputValue
     console.log(tasks)
@@ -69,6 +77,19 @@ app.post('/api/setinprogress/', (req,res)=>{
         console.log(err)
     });
 });
+
+app.post('/api/setcompleted/', (req,res)=>{
+    const taskss=req.body.id
+    const sqlSelect = "INSERT INTO completedtasks (tasks) (SELECT tasks FROM inprogresstask WHERE id = (?))";
+    db.query(sqlSelect,taskss, (err, result)=>{
+        console.log(err);
+    });
+    const sqldelete = "DELETE FROM inprogresstask WHERE id=(?) ";
+    db.query(sqldelete, taskss, (err, result)=>{
+        console.log(err)
+    });
+});
+
 app.listen(3001, () => {
     console.log('Running on 3001');
 });
