@@ -15,11 +15,12 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import RotateLeftIcon from '@mui/icons-material/RotateLeft';
+import DoneIcon from '@mui/icons-material/Done';
 
 function App() {
 
@@ -137,7 +138,7 @@ function App() {
               >
                 <ListItemAvatar>
                   <Avatar>
-                    <FolderIcon />
+                    <AssignmentIcon />
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
@@ -167,7 +168,7 @@ function App() {
               >
                 <ListItemAvatar>
                   <Avatar>
-                    <FolderIcon />
+                    <RotateLeftIcon />
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
@@ -196,7 +197,7 @@ function App() {
                 >
                   <ListItemAvatar>
                     <Avatar>
-                      <FolderIcon />
+                      <DoneIcon />
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
