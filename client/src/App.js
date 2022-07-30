@@ -2,6 +2,24 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import './App.css';
 import { useState, useEffect } from 'react';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import FolderIcon from '@mui/icons-material/Folder';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Add from '@mui/icons-material/Add';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
 function App() {
 
@@ -35,6 +53,7 @@ function App() {
       headers: {"Content-Type": "application/JSON"},
       body: JSON.stringify({inputValue})
     })
+    
     setCount(count+1)
   }
 
@@ -85,37 +104,111 @@ function App() {
 
   return (
     <div className="App">
-      Project Management<br></br><br></br>
-      <input type="text" onChange={(e)=>setInput(e.target.value)} />
-      <Button variant="contained" onClick={(e)=>addTask()}>Add a task</Button>
+      Project Management <br></br><br></br>
+      <TextField label="Add a task" variant="outlined" type="text" onChange={(e)=>setInput(e.target.value)} />
+      <br></br> <br></br>
+      <Button variant="contained" endIcon={<Add />} onClick={(e)=>addTask()}>Assign</Button>
         <br></br><br></br>
-      Pending Tasks:<br></br>  <br></br>{pendingTask.map((val)=>{
-        return <div>
-          {val.tasks} &nbsp;&nbsp;&nbsp; <Button variant="contained" onClick={(e)=>deleteTask(val.id)}>Delete</Button>
-          &nbsp;&nbsp;&nbsp; <Button variant="contained" onClick={(e)=>setTaskInProgress(val.id)}>Set Task In Progress</Button>
-          <br></br>
-          <br></br>
-          </div>
-      })}
 
-        In Progress Tasks:<br></br>  <br></br>
+        <TableContainer component={Paper}>
+      <Table align='center'>
+        <TableRow>
+          <TableCell>
+            Pending Tasks
+          </TableCell>
+          <TableCell>
+            In Progress Tasks
+          </TableCell>
+          <TableCell>
+            Completed Tasks
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>
+          <Paper>
+      {pendingTask.map((val)=>{
+        return <List>
+        <ListItem
+                secondaryAction={
+                  <IconButton edge="end" aria-label="delete">
+                    <KeyboardDoubleArrowRightIcon onClick={(e)=>setTaskInProgress(val.id)}/>
+                  </IconButton>
+                }
+              >
+                <ListItemAvatar>
+                  <Avatar>
+                    <FolderIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={val.tasks}
+                />
+                <ListItem secondaryAction={
+            <IconButton edge="end" aria-label="delete">
+            <DeleteIcon onClick={(e)=>deleteTask(val.id)}/>
+          </IconButton>
+          }></ListItem>
+              </ListItem>
+        </List>
+      })}
+    </Paper>
+          </TableCell>
+          <TableCell>
+          <Paper>
+        
         {inProgress.map((val)=>{
-        return <div>
-          {val.tasks}  &nbsp;&nbsp;&nbsp; <Button variant="contained" onClick={(e)=>deleteinprogress(val.id)}>Delete</Button>
-          &nbsp;&nbsp;&nbsp; <Button variant="contained" onClick={(e)=>setTaskCompleted(val.id)}>Set Task Completed</Button>
-          <br></br>
-          <br></br>
-          </div>
+        return <List>
+        <ListItem
+                secondaryAction={
+                  <IconButton edge="end" aria-label="delete">
+                    <KeyboardDoubleArrowRightIcon onClick={(e)=>setTaskCompleted(val.id)}/>
+                  </IconButton>
+                }
+              >
+                <ListItemAvatar>
+                  <Avatar>
+                    <FolderIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={val.tasks}
+                />
+                <ListItem secondaryAction={
+            <IconButton edge="end" aria-label="delete">
+            <DeleteIcon onClick={(e)=>deleteinprogress(val.id)}/>
+          </IconButton>
+          }></ListItem>
+              </ListItem>
+        </List>
       })}
-
-        Completed Tasks:<br></br>  <br></br>
+    </Paper>
+          </TableCell>
+          <TableCell>
+          <Paper>
         {completed.map((val)=>{
-        return <div>
-          {val.tasks}  &nbsp;&nbsp;&nbsp; <Button variant="contained" onClick={(e)=>deletecompleted(val.id)}>Delete</Button>
-          <br></br>
-          <br></br>
-          </div>
-      })}
+        return <List>
+          <ListItem
+                  secondaryAction={
+                    <IconButton edge="end" aria-label="delete">
+                      <DeleteIcon onClick={(e)=>deletecompleted(val.id)}/>
+                    </IconButton>
+                  }
+                >
+                  <ListItemAvatar>
+                    <Avatar>
+                      <FolderIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={val.tasks}
+                  />
+                </ListItem>
+          </List>
+      })}   </Paper>
+          </TableCell>
+        </TableRow>
+      </Table>
+      </TableContainer>
     </div>
   );
 }
