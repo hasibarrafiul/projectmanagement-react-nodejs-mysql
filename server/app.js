@@ -24,6 +24,14 @@ app.get('/api/pending/', (req,res)=>{
     });
 });
 
+app.get('/api/inprogress/', (req,res)=>{
+    const sqlSelect = "SELECT * from inprogresstask";
+    db.query(sqlSelect, (err, result)=>{
+        //console.log(result)
+        res.send(result);
+    });
+});
+
 app.post('/api/addpending/', (req,res)=>{
     const tasks=req.body.inputValue
     console.log(tasks)
@@ -44,14 +52,13 @@ app.post('/api/deletetask/', (req,res)=>{
 
 app.post('/api/setinprogress/', (req,res)=>{
     const taskss=req.body.id
-    const sqlSelect = "SELECT tasks from pendingtasks where id=(?)";
+    const sqlSelect = "INSERT INTO inprogresstask (tasks) (SELECT tasks FROM pendingtasks WHERE id = (?))";
     db.query(sqlSelect,taskss, (err, result)=>{
-        console.log(result)
-        
-    //     const sqlInsert = "INSERT INTO inprogresstask(tasks) values (?) ";
-    //     db.query(sqlInsert, result.tasks, (err, result)=>{
-    //     console.log(err)
-    // });
+        console.log(err);
+    });
+    const sqldelete = "DELETE FROM pendingtasks WHERE id=(?) ";
+    db.query(sqldelete, taskss, (err, result)=>{
+        console.log(err)
     });
 });
 app.listen(3001, () => {
