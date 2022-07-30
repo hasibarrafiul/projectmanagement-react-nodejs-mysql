@@ -9,43 +9,33 @@ function App() {
   const [pendingTask, setPendingTask] = useState([])
   const [inProgress, setInProgress] = useState([])
   const [completed, setCompleted] = useState([])
+  const [count, setCount] = useState(0)
 
   useEffect(()=> {
-    getPendingTask();
-    getInProgressTask();
-    getCompletedTask();
-  },[pendingTask]);
-
-  const getPendingTask = () =>{
     fetch('http://localhost:3001/api/pending/')
     .then((resp) => resp.json())
     .then((resp) => setPendingTask(resp))
     .catch((error) => console.log(error));
-  }
-
-  const getInProgressTask = () =>{
+    
     fetch('http://localhost:3001/api/inprogress/')
     .then((resp) => resp.json())
     .then((resp) => setInProgress(resp))
     .catch((error) => console.log(error));
-  }
-
-  const getCompletedTask = () =>{
+    
     fetch('http://localhost:3001/api/getcompleted/')
     .then((resp) => resp.json())
     .then((resp) => setCompleted(resp))
     .catch((error) => console.log(error));
-  }
+  },[count]);
   
 
   const addTask = () =>{
     fetch('http://localhost:3001/api/addpending/', {
       method: "POST",
       headers: {"Content-Type": "application/JSON"},
-      body: JSON.stringify({inputValue}) 
+      body: JSON.stringify({inputValue})
     })
-    getPendingTask()
-    
+    setCount(count+1)
   }
 
   const deleteTask = (id) =>{
@@ -54,7 +44,7 @@ function App() {
       headers: {"Content-Type": "application/JSON"},
       body: JSON.stringify({id}) 
     })
-    getPendingTask()
+    setCount(count+1)
   }
 
   const setTaskInProgress = (id) =>{
@@ -63,8 +53,7 @@ function App() {
       headers: {"Content-Type": "application/JSON"},
       body: JSON.stringify({id}) 
     })
-    getPendingTask()
-    getInProgressTask()
+    setCount(count+1)
   }
 
   const deleteinprogress = (id) =>{
@@ -73,7 +62,16 @@ function App() {
       headers: {"Content-Type": "application/JSON"},
       body: JSON.stringify({id}) 
     })
-    getInProgressTask()
+    setCount(count+1)
+  }
+
+  const deletecompleted = (id) =>{
+    fetch('http://localhost:3001/api/deletecompletedtask/', {
+      method: "POST",
+      headers: {"Content-Type": "application/JSON"},
+      body: JSON.stringify({id}) 
+    })
+    setCount(count+1)
   }
 
   const setTaskCompleted = (id) =>{
@@ -82,15 +80,14 @@ function App() {
       headers: {"Content-Type": "application/JSON"},
       body: JSON.stringify({id}) 
     })
-    getPendingTask()
-    getInProgressTask()
+    setCount(count+1)
   }
 
   return (
     <div className="App">
       Project Management<br></br><br></br>
       <input type="text" onChange={(e)=>setInput(e.target.value)} />
-      <button onClick={(e)=>addTask()}>Add a task</button>
+      <Button variant="contained" onClick={(e)=>addTask()}>Add a task</Button>
         <br></br><br></br>
       Pending Tasks:<br></br>  <br></br>{pendingTask.map((val)=>{
         return <div>
@@ -114,7 +111,7 @@ function App() {
         Completed Tasks:<br></br>  <br></br>
         {completed.map((val)=>{
         return <div>
-          {val.tasks}  
+          {val.tasks}  &nbsp;&nbsp;&nbsp; <Button variant="contained" onClick={(e)=>deletecompleted(val.id)}>Delete</Button>
           <br></br>
           <br></br>
           </div>

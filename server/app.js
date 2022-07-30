@@ -66,6 +66,14 @@ app.post('/api/deleteinprogresstask/', (req,res)=>{
     });
 });
 
+app.post('/api/deletecompletedtask/', (req,res)=>{
+    const tasks=req.body.id
+    const sqldelete = "DELETE FROM completedtasks WHERE id=(?) ";
+    db.query(sqldelete, tasks, (err, result)=>{
+        console.log(err)
+    });
+});
+
 app.post('/api/setinprogress/', (req,res)=>{
     const taskss=req.body.id
     const sqlSelect = "INSERT INTO inprogresstask (tasks) (SELECT tasks FROM pendingtasks WHERE id = (?))";
